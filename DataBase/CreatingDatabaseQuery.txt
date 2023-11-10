@@ -1,0 +1,50 @@
+CREATE DATABASE ChatAppDB;
+USE ChatAppDB;
+
+CREATE TABLE Users (
+    UserId INT IDENTITY PRIMARY KEY,
+    FirstName NVARCHAR(30),
+    LastName NVARCHAR(30),
+    UserName NVARCHAR(30) UNIQUE,
+    PinCode NVARCHAR(4) CONSTRAINT CK_PinCode_Length CHECK (LEN(PinCode) = 4)
+);
+
+CREATE TABLE Messages (
+    MessageId INT IDENTITY PRIMARY KEY,
+    MessageText NVARCHAR(MAX),
+    SenderId INT FOREIGN KEY REFERENCES Users(UserId),
+    ReceiverId INT FOREIGN KEY REFERENCES Users(UserId),
+    SendTime DATETIME
+);
+
+INSERT INTO Users (FirstName, LastName, UserName, PinCode)
+VALUES
+    ('Houdaifa','Bouamine','H','1234'),
+    ('John', 'Doe', 'john_doe', '1234'),
+    ('Alice', 'Smith', 'alice_smith', '5678'),
+    ('Bob', 'Johnson', 'bob_johnson', '9876'),
+    ('Eva', 'Williams', 'eva_williams', '4321'),
+    ('Chris', 'Miller', 'chris_miller', '8765'),
+    ('Sophia', 'Davis', 'sophia_davis', '1357'),
+    ('Michael', 'Brown', 'michael_brown', '2468'),
+    ('Emma', 'Jones', 'emma_jones', '7890'),
+    ('Daniel', 'Moore', 'daniel_moore', '6543'),
+    ('Olivia', 'Taylor', 'olivia_taylor', '9012');
+
+INSERT INTO Messages (MessageText, SenderId, ReceiverId, SendTime)
+VALUES
+    ('Hello, how are you?', 1, 2, GETDATE()),
+    ('I am good, thanks!', 2, 1, GETDATE()),
+    ('Meeting at 3 pm today.', 3, 1, GETDATE()),
+    ('Let''s catch up later.', 4, 2, GETDATE()),
+    ('Sure, sounds good!', 2, 4, GETDATE()),
+    ('Reminder: submit the report.', 5, 1, GETDATE()),
+    ('Received, I will do it.', 1, 5, GETDATE()),
+    ('Happy birthday!', 6, 3, GETDATE()),
+    ('Thank you so much!', 3, 6, GETDATE()),
+    ('Planning a weekend getaway?', 7, 8, GETDATE()),
+	('I Know You', 4, 1, GETDATE()),
+	('What Did You do on the project ???', 1, 2, GETDATE()),
+	('But I do not', 1, 1, GETDATE());
+
+
