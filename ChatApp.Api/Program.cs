@@ -1,4 +1,6 @@
 using ChatApp.Api.Data;
+using ChatApp.Api.Repositories.Implimentations;
+using ChatApp.Api.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ChatAppDbContext>();
-
+builder.Services.AddScoped<IUserRepository,UserRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 var app = builder.Build();
 
 app.UseSwagger();
