@@ -5,6 +5,7 @@ using ChatApp.Api.Repositories.Interfaces;
 using ChatApp.Models.Dtos.Message;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace ChatApp.Api.Controllers
 {
@@ -60,9 +61,64 @@ namespace ChatApp.Api.Controllers
 
             return Ok(messagesAsDtos);
         }
-        
+
+
+        [HttpPost]
+        public async Task<ActionResult> PostMessage([FromBody] MessageAddDto messageAddDto)
+        {
+           
+            try
+            {
+                if (messageAddDto == null)
+                {
+                    return BadRequest("Invalid JSON payload. body");
+                }
+
+                string message = messageAddDto.MessageText.ToString();
+
+                if(message == "")
+                {
+                    return BadRequest("Message Can not be Empty");
+                }
+
+                User? Sender = await  this._UserRepository.GetUser(messageAddDto.SenderId.GetValueOrDefault());
+                if(Sender == null)
+                {
+                    return NotFound("Sender Not Found");
+                }
+                User? Receiver = await this._UserRepository.GetUser(messageAddDto.ReceiverId.GetValueOrDefault());
+                if (Receiver == null)
+                {
+                    return NotFound("Receiver Not Found");
+                }
+
+
+                if (Sender.PinCode != messageAddDto.SenderPinCode)
+                {
+                    return BadRequest("Sender Pin Code is Wrong");
+                }
+
+                Message NewMessage = messageAddDto.ToEntity();
+
+                bool isSendSuccessfuly = await this._MessageRepository.AddMessage(NewMessage);
+
+                if(!isSendSuccessfuly)
+                {
+                    return BadRequest("Failed To Send The Message");
+                }
+
+                // NOTE (Houdaifa) : write Code here to insert the new message to the database
+                
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
         // Not Ready
-        
+
         [HttpGet("{User_1_Id}/{User_2_Id}")]
         private async Task<ActionResult<IEnumerable<MessageIn2UsersChatDto>>> GetMessagesBetween(int User_1_Id, int User_2_Id)
         {

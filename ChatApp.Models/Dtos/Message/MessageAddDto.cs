@@ -8,9 +8,13 @@ namespace ChatApp.Models.Dtos.Message
 {
     public class MessageAddDto
     {
+        
         public string? MessageText { get; set; } = string.Empty;
         public int? SenderId { get; set; }
+
         public int? ReceiverId { get; set; }
+        public string SenderPinCode { get; set; } = string.Empty;
+
     }
 
 }

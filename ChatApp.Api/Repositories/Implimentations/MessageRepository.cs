@@ -13,6 +13,13 @@ namespace ChatApp.Api.Repositories.Implimentations
             this.Database = database;
         }
 
+        public async Task<bool> AddMessage(Message message)
+        {
+            this.Database.Messages.Add(message);
+            await this.Database.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<Message?> GetMessage(int id)
         {
             Message? message = await Database.Messages.Where(m => m.MessageId == id).FirstOrDefaultAsync();

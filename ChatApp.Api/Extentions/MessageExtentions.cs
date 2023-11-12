@@ -78,5 +78,19 @@ namespace ChatApp.Api.Extentions
                 return user1?.UserId == Senderid;
             }
         }
+
+        public static Message ToEntity(this MessageAddDto messageAddDto)
+        {
+            Message NewMessage = new Message()
+            {
+                SenderId = messageAddDto.SenderId,
+                ReceiverId = messageAddDto.ReceiverId,
+                MessageText = messageAddDto.MessageText,
+                SendTime = DateTime.Now,
+            };
+
+            return NewMessage;
+        }
+
     }
 }
