@@ -1,6 +1,7 @@
 ﻿using ChatApp.Api.Data;
 using ChatApp.Api.Entities;
 using ChatApp.Api.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChatApp.Api.Repositories.Implimentations
 {
@@ -12,14 +13,19 @@ namespace ChatApp.Api.Repositories.Implimentations
             this.Database = chatAppDbContext;
         }
 
-        public User? GetUser(int id)
+        public async Task<User?> GetUser(int id)
         {
-            return this.Database.Users.Where(u => u.UserId == id).FirstOrDefault();
+            return await this.Database.Users.Where(u => u.UserId == id).FirstOrDefaultAsync();
         }
 
-        public IEnumerable<User>? GetUsers()
+        public async Task<User?> GetUser(string username)
         {
-            return this.Database.Users.ToList();
+            return await this.Database.Users.Where(u=>u.UserName == username).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<User>?> GetUsers()
+        {
+            return await this.Database.Users.ToListAsync();
         }
     }
 }

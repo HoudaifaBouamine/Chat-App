@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace ChatApp.Api.Extentions
 {
-    public static class Extentions
+    public static class MessageExtentions
     {
         public static MessageReadDto ToDto(this Message message,User sender,User receiver)
         {
