@@ -13,10 +13,12 @@ namespace ChatApp.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _UserRepository;
-        public UserController(IUserRepository userRepository)
+        private readonly IUserRepository    _UserRepository   ;
+        private readonly IMessageRepository _MessageRepository;
+        public UserController(IUserRepository userRepository,IMessageRepository messageRepository)
         {
             this._UserRepository = userRepository;
+            this._MessageRepository = messageRepository;
         }
 
         [HttpGet("{userName}/{pinCode}")]
@@ -54,6 +56,39 @@ namespace ChatApp.Api.Controllers
 
         }
 
+
+        [HttpGet("{userName}/Contacts")]
+        public async Task<ActionResult<UserReadProfileDto>> GetUserContacts(string userName)
+        {
+
+
+            var users = await this._UserRepository.GetUsers();
+
+            if(users == null)
+            {
+                return NotFound("There is No User on the system");
+            }
+
+
+            User? user = await this._UserRepository.GetUser(userName);
+
+            if (user == null)
+            {
+                return NotFound("User Not Found");
+            }
+
+
+            IEnumerable<Message> messages = await this._MessageRepository.GetMessagesForUser(user.UserId);
+
+            if(messages.Count() == 0)
+            {
+                return NotFound("User Have no contacts");
+            }
+
+            IEnumerable<UserReadProfileDto> Contacts = user.GetContacts(users, messages);
+
+            return Ok( Contacts );
+        }
 
         // Not Ready
 

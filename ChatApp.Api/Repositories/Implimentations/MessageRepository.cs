@@ -32,6 +32,12 @@ namespace ChatApp.Api.Repositories.Implimentations
             return messages;
         }
 
+        public async Task<IEnumerable<Message>> GetMessagesForUser(int id)
+        {
+            return await this.Database.Messages.Where(m => (m.SenderId == id || m.ReceiverId == id)).ToListAsync();
+        }
+
+
         public async Task<IEnumerable<Message>?> GetMessagesForUsers(int User_1_Id, int User_2_Id)
         {
             return await this.Database.Messages.Where(

@@ -117,6 +117,10 @@ namespace ChatApp.Api.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+
+        
+        
         // Not Ready
 
         [HttpGet("{User_1_Id}/{User_2_Id}")]
@@ -135,6 +139,8 @@ namespace ChatApp.Api.Controllers
 
             return Ok( messagesAsDtos );
         }
+
+
 
     }
 }

@@ -27,5 +27,7 @@ namespace ChatApp.Api.Repositories.Implimentations
         {
             return await this.Database.Users.ToListAsync();
         }
+
+
     }
 }
