@@ -5,7 +5,9 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.Api", "ChatApp.Api\ChatApp.Api.csproj", "{04FC6EA1-503F-4885-91A0-77CF2766A174}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Models", "ChatApp.Models\ChatApp.Models.csproj", "{51D2E31D-D953-43DE-8857-2E1AA099ED9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.Models", "ChatApp.Models\ChatApp.Models.csproj", "{51D2E31D-D953-43DE-8857-2E1AA099ED9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Win", "ChatApp.Win\ChatApp.Win.csproj", "{FB1AEF10-B0AA-403A-B8B5-8DE85E4349A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{51D2E31D-D953-43DE-8857-2E1AA099ED9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51D2E31D-D953-43DE-8857-2E1AA099ED9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51D2E31D-D953-43DE-8857-2E1AA099ED9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB1AEF10-B0AA-403A-B8B5-8DE85E4349A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB1AEF10-B0AA-403A-B8B5-8DE85E4349A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB1AEF10-B0AA-403A-B8B5-8DE85E4349A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB1AEF10-B0AA-403A-B8B5-8DE85E4349A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
