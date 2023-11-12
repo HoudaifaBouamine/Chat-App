@@ -25,10 +25,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Testing
-app.MapGet("/test", (ChatAppDbContext dbContext) =>
-{
-    return  Results.Ok( dbContext.Messages.ToList() );
-});
 
 app.Run();
