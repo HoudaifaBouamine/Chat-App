@@ -41,7 +41,7 @@ namespace ChatApp.Api.Controllers
             }
 
         }
-
+        
         [HttpGet("{userName}")]
         public async Task<ActionResult<UserReadProfileDto>> GetUser(string userName)
         {
@@ -88,6 +88,27 @@ namespace ChatApp.Api.Controllers
             IEnumerable<UserReadProfileDto> Contacts = user.GetContacts(users, messages);
 
             return Ok( Contacts );
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<UserReadDto>> RegisterUser([FromBody] UserAddDto userAsAddDto)
+        {
+            User? userAsEntity = await this._UserRepository.GetUser(userAsAddDto.UserName);
+
+            if(userAsEntity != null)
+            {
+                return BadRequest("User Name is Taken");
+            }
+
+            userAsEntity = await this._UserRepository.AddNewUser(userAsAddDto);
+
+            if(userAsEntity == null)
+            {
+                return BadRequest("Failed To Add User");
+            }
+
+            return userAsEntity.ToDto();
         }
 
         // Not Ready

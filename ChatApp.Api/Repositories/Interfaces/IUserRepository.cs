@@ -1,4 +1,5 @@
 ﻿using ChatApp.Api.Entities;
+using ChatApp.Models.Dtos.User;
 
 namespace ChatApp.Api.Repositories.Interfaces
 {
@@ -9,5 +10,6 @@ namespace ChatApp.Api.Repositories.Interfaces
         public Task<IEnumerable<User>?> GetUsers();
         public Task<User?> GetUser(string username);
 
+        public Task<User?> AddNewUser(UserAddDto user);
     }
 }

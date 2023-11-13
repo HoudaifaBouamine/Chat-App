@@ -2,6 +2,7 @@ using ChatApp.Api.Data;
 using ChatApp.Api.Repositories.Implimentations;
 using ChatApp.Api.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,5 +26,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapGet("/user", () => { 
+    
+     return Results.Ok (new ChatAppDbContext().Users.ToList()); 
+
+});
 
 app.Run("https://localhost:3000");

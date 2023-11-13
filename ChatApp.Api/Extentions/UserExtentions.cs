@@ -77,5 +77,16 @@ namespace ChatApp.Api.Extentions
                                              
             }
         }
+
+        public static User ToEntity(this UserAddDto user)
+        {
+            return new User()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PinCode = user.PinCode,
+                UserName = user.UserName,
+            };
+        }
     }
 }
