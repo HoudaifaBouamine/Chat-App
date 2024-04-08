@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ChatApp.Api.Entities;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace ChatApp.Api.Data;
 
 public partial class ChatAppDbContext : DbContext
@@ -21,7 +22,7 @@ public partial class ChatAppDbContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source = .; Initial Catalog = ChatAppDB; User Id = sa; Password=sa123456; Trusted_Connection=true;Encrypt=false;");
+        => optionsBuilder.UseSqlite("Data Source=chatapp.db");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
