@@ -7,9 +7,15 @@
 </head>
 <body>
   <h1>SignalR Client</h1>
-  <input id="username" placeholder="Username" value="Houdaifa" style="width: 100px; height: 30px; padding-left: 10px;"><br><br>
+  
+  <input id="username" placeholder="Username" value="Houdaifa" style="width: 100px; height: 30px; padding-left: 10px;">
+  <input id="roomname" placeholder="RoomName" value="React Room" style="width: 100px; height: 30px; padding-left: 10px;"><br><br>
   <input id="message" placeholder="Message" value="Hello" style="width: 300px; height: 30px; padding-left: 10px;">
+  
   <button onclick="sendMessage()" style="width: 70px; height: 30px;">Send</button>
+  
+  <div id="messages"></div>
+  
   <script>
     const signalrClient = createSignalrClient();
 
@@ -17,10 +23,12 @@
     function sendMessage() {
         const messageInput = document.getElementById("message");
         const username = document.getElementById("username").value;
+        const roomname = document.getElementById("roomname").value;
 
-        signalrClient.sendMessage(JSON.stringify({"username": username, "message": messageInput.value}))
+        signalrClient.sendMessage(JSON.stringify({"userName": username, "message": messageInput.value, "roomName":roomname}))
             .then(() => {
                 console.log("Sent Message : \"" + messageInput.value + "\", by user : " + username);
+                messages.innerHTML += `<p style="color:blue">me : ${messageInput.value}</p>`;
                 messageInput.value = "";
             })
             .catch(error => {
@@ -35,8 +43,11 @@
             console.log("SignalR connection started successfully.");
 
             // Register callback for receiving messages
-            signalrClient.receiveMessageCallback((message) => {
-                console.log("Received message: " + message);
+            signalrClient.receiveMessageCallback((messageAsJson) => {
+
+                console.log("Received message: " + messageAsJson);
+                const message = JSON.parse(messageAsJson);
+                messages.innerHTML += `<p>${message.userName} : ${message.message}</p>`;
                 // Your callback logic here
             });
         })

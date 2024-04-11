@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,9 +27,13 @@ app.Run("http://localhost:5000");
 
 class ChatHub : Hub
 {
-    public async Task SendMessage(string message)
+    public async Task SendMessage(string messageAsJson)
     {
-        System.Console.WriteLine("received : " + message);
-        await Clients.All.SendAsync("ReceiveMessage", message);
+        System.Console.WriteLine("received : " + messageAsJson);
+        var messageData = JsonSerializer.Deserialize<object>(messageAsJson);
+        
+        await Clients.AllExcept(Context.ConnectionId).SendAsync("ReceiveMessage", messageAsJson);
     }
 }
+
+record MessageData(string RoomName,string UserName, string Message);
