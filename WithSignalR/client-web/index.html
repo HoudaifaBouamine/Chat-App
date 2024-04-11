@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SignalR Client</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+  <script src="/client-web/SignalR-Client.js"></script>
+</head>
+<body>
+  <h1>SignalR Client</h1>
+  <input id="username" placeholder="Username" value="Houdaifa" style="width: 100px; height: 30px; padding-left: 10px;"><br><br>
+  <input id="message" placeholder="Message" value="Hello" style="width: 300px; height: 30px; padding-left: 10px;">
+  <button onclick="sendMessage()" style="width: 70px; height: 30px;">Send</button>
+  <script>
+    const signalrClient = createSignalrClient();
+
+    // Define sendMessage function
+    function sendMessage() {
+        const messageInput = document.getElementById("message");
+        const username = document.getElementById("username").value;
+
+        signalrClient.sendMessage(JSON.stringify({"username": username, "message": messageInput.value}))
+            .then(() => {
+                console.log("Sent Message : \"" + messageInput.value + "\", by user : " + username);
+                messageInput.value = "";
+            })
+            .catch(error => {
+                console.error("Error sending message:", error);
+            });
+    }
+
+    // Start SignalR connection
+    signalrClient.start()
+        .then(() => {
+            // Connection started successfully
+            console.log("SignalR connection started successfully.");
+
+            // Register callback for receiving messages
+            signalrClient.receiveMessageCallback((message) => {
+                console.log("Received message: " + message);
+                // Your callback logic here
+            });
+        })
+        .catch(error => {
+            console.error("Error starting SignalR connection:", error);
+        });
+  </script>
+</body>
+</html>
