@@ -20,9 +20,22 @@ function createSignalrClient() {
         });
     }
 
-    function sendMessage(message) {
+    function sendMessage(roomName,message) {
         return new Promise((resolve, reject) => {
-            connection.invoke("SendMessage", message)
+            connection.invoke("SendMessageToRoom", roomName,message)
+                .then(() => {
+                    resolve();
+                })
+                .catch(error => {
+                    console.error("Error sending message:", error);
+                    reject(error);
+                });
+        });
+    }
+
+    function JoinRoom(roomName, userName) {
+        return new Promise((resolve, reject) => {
+            connection.invoke("JoinRoom", roomName,userName)
                 .then(() => {
                     resolve();
                 })
@@ -34,14 +47,15 @@ function createSignalrClient() {
     }
 
     function receiveMessageCallback(callback) {
-        connection.on("ReceiveMessage", (message) => {
-            callback(message);
+        connection.on("ReceiveMessage", (userName,message) => {
+            callback(userName,message);
         });
     }
 
     return {
         start: start,
         sendMessage: sendMessage,
-        receiveMessageCallback: receiveMessageCallback
+        receiveMessageCallback: receiveMessageCallback,
+        JoinRoom : JoinRoom
     };
 }

@@ -9,7 +9,10 @@
   <h1>SignalR Client</h1>
   
   <input id="username" placeholder="Username" value="Houdaifa" style="width: 100px; height: 30px; padding-left: 10px;">
-  <input id="roomname" placeholder="RoomName" value="React Room" style="width: 100px; height: 30px; padding-left: 10px;"><br><br>
+  <input id="roomname" placeholder="RoomName" value="React Room" style="width: 100px; height: 30px; padding-left: 10px;">
+  <button onclick="joinRoom()" style="width: 70px; height: 30px;">Join</button><br><br>
+  
+  
   <input id="message" placeholder="Message" value="Hello" style="width: 300px; height: 30px; padding-left: 10px;">
   
   <button onclick="sendMessage()" style="width: 70px; height: 30px;">Send</button>
@@ -22,18 +25,31 @@
     // Define sendMessage function
     function sendMessage() {
         const messageInput = document.getElementById("message");
+        const message = messageInput.value;
         const username = document.getElementById("username").value;
         const roomname = document.getElementById("roomname").value;
 
-        signalrClient.sendMessage(JSON.stringify({"userName": username, "message": messageInput.value, "roomName":roomname}))
+        signalrClient.sendMessage(roomname,message)
             .then(() => {
-                console.log("Sent Message : \"" + messageInput.value + "\", by user : " + username);
-                messages.innerHTML += `<p style="color:blue">me : ${messageInput.value}</p>`;
+                console.log("Sent Message : \"" + message + "\", by user : " + username);
+                messages.innerHTML += `<p style="color:blue">me : ${message}</p>`;
                 messageInput.value = "";
             })
             .catch(error => {
                 console.error("Error sending message:", error);
             });
+    }
+
+    function joinRoom()
+    {
+        const username = document.getElementById("username").value;
+        const roomname = document.getElementById("roomname").value;
+
+        signalrClient.JoinRoom(roomname,username).then(() => {
+            console.log("Joined room : " + roomname + " by user : " + username);
+        }).catch(error => {
+            console.error("Error joining room:", error);
+        });
     }
 
     // Start SignalR connection
@@ -43,12 +59,15 @@
             console.log("SignalR connection started successfully.");
 
             // Register callback for receiving messages
-            signalrClient.receiveMessageCallback((messageAsJson) => {
+            signalrClient.receiveMessageCallback((userName,message) => {
 
-                console.log("Received message: " + messageAsJson);
-                const message = JSON.parse(messageAsJson);
-                messages.innerHTML += `<p>${message.userName} : ${message.message}</p>`;
-                // Your callback logic here
+                console.log("Received message: " + message + " from user: " + userName);
+                
+                if(userName == "")
+                    messages.innerHTML += `<p style="color:red; padding-left: 30px">${message}</p>`;
+                else
+                    messages.innerHTML += `<p>${userName} : ${message}</p>`;
+
             });
         })
         .catch(error => {
